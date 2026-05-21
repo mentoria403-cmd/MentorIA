@@ -85,6 +85,50 @@
       <ul id="listaMetas"></ul>
 
     </section>
+    <!-- CRONOGRAMA -->
+
+<section class="dashboard-card">
+
+  <h3>Cronograma de Estudos</h3>
+
+  <div class="cronograma-form">
+
+    <input
+      type="text"
+      id="materiaInput"
+      placeholder="Matéria"
+    >
+
+    <select id="diaInput">
+
+      <option value="">
+        Selecione o dia
+      </option>
+
+      <option>Segunda</option>
+      <option>Terça</option>
+      <option>Quarta</option>
+      <option>Quinta</option>
+      <option>Sexta</option>
+      <option>Sábado</option>
+      <option>Domingo</option>
+
+    </select>
+
+    <input
+      type="time"
+      id="horarioInput"
+    >
+
+    <button onclick="adicionarCronograma()">
+      Adicionar
+    </button>
+
+  </div>
+
+  <div id="listaCronograma"></div>
+
+</section>
 
   </main>
 
