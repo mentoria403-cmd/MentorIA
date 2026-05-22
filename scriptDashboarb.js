@@ -45,6 +45,7 @@ function adicionarTarefa() {
   input.value = "";
 
   renderizarTarefas();
+  atualizarCards();
 }
 
 function renderizarTarefas() {
@@ -103,6 +104,7 @@ function removerTarefa(index) {
   );
 
   renderizarTarefas();
+  atualizarCards();
 }
 function concluirTarefa(index) {
 
@@ -115,6 +117,7 @@ function concluirTarefa(index) {
   );
 
   renderizarTarefas();
+  atualizarCards();
 }
 
 // METAS
@@ -137,7 +140,10 @@ function adicionarMeta() {
     return;
   }
 
-  metas.push(texto);
+  metas.push({
+  texto: texto,
+  concluida: false
+});
 
   localStorage.setItem(
     "metas",
@@ -147,6 +153,7 @@ function adicionarMeta() {
   input.value = "";
 
   renderizarMetas();
+  atualizarCards();
 }
 
 function renderizarMetas() {
@@ -159,18 +166,42 @@ function renderizarMetas() {
   metas.forEach((meta, index) => {
 
     lista.innerHTML += `
-      <li>
-        ${meta}
 
-        <button
-          class="remover-btn"
-          onclick="removerMeta(${index})"
-        >
-          X
-        </button>
+      <li>
+
+        <span style="
+          text-decoration:
+          ${meta.concluida ? "line-through" : "none"};
+        ">
+
+          ${meta.texto}
+
+        </span>
+
+        <div>
+
+          <button
+            onclick="concluirMeta(${index})"
+          >
+            ✔
+          </button>
+
+          <button
+            class="remover-btn"
+            onclick="removerMeta(${index})"
+          >
+            X
+          </button>
+
+        </div>
+
       </li>
     `;
   });
+
+  atualizarProgresso();
+
+  atualizarCards();
 }
 
 function removerMeta(index) {
@@ -183,6 +214,20 @@ function removerMeta(index) {
   );
 
   renderizarMetas();
+  atualizarCards();
+}
+function concluirMeta(index) {
+
+  metas[index].concluida =
+    !metas[index].concluida;
+
+  localStorage.setItem(
+    "metas",
+    JSON.stringify(metas)
+  );
+
+  renderizarMetas();
+  atualizarCards();
 }
 
 // SAIR
@@ -205,7 +250,12 @@ function atualizarProgresso() {
   const texto =
     document.getElementById("textoProgresso");
 
-  if(tarefas.length === 0) {
+  // TOTAL
+
+  const totalItens =
+    tarefas.length + metas.length;
+
+  if(totalItens === 0) {
 
     barra.style.width = "0%";
 
@@ -214,14 +264,30 @@ function atualizarProgresso() {
     return;
   }
 
-  const concluidas =
+  // TAREFAS CONCLUÍDAS
+
+  const tarefasConcluidas =
     tarefas.filter(
       tarefa => tarefa.concluida
     ).length;
 
+  // METAS CONCLUÍDAS
+
+  const metasConcluidas =
+    metas.filter(
+      meta => meta.concluida
+    ).length;
+
+  // TOTAL CONCLUÍDO
+
+  const totalConcluido =
+    tarefasConcluidas + metasConcluidas;
+
+  // PORCENTAGEM
+
   const porcentagem =
     Math.round(
-      (concluidas / tarefas.length) * 100
+      (totalConcluido / totalItens) * 100
     );
 
   barra.style.width =
@@ -230,3 +296,15 @@ function atualizarProgresso() {
   texto.innerText =
     porcentagem + "% concluído";
 }
+function atualizarCards() {
+
+  document.getElementById("cardTarefas")
+    .innerText = tarefas.length + " Tarefas";
+
+  document.getElementById("cardMetas")
+    .innerText = metas.length + " Metas";
+
+  document.getElementById("cardCronograma")
+    .innerText = cronograma.length + " Horários";
+}
+

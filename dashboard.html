@@ -3,149 +3,147 @@
 <head>
 
   <meta charset="UTF-8">
-
-  <meta name="viewport"
-        content="width=device-width, initial-scale=1.0">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
 
   <title>Dashboard - MentorIA</title>
 
   <link rel="stylesheet" href="style.css">
 
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
+
 </head>
 <body class="dashboard-body">
 
-  <header class="dashboard-header">
+  <!-- SIDEBAR -->
+  <aside class="sidebar">
 
-    <h1>MentorIA</h1>
+    <h2>MentorIA</h2>
 
-    <button onclick="sair()">
-      Sair
+    <nav>
+      <a href="#" class="active"><i class="fa fa-home"></i> Dashboard</a>
+      <a href="#tarefas"><i class="fa fa-list-check"></i> Tarefas</a>
+      <a href="#metas"><i class="fa fa-bullseye"></i> Metas</a>
+      <a href="#cronograma"><i class="fa fa-calendar"></i> Cronograma</a>
+    </nav>
+
+    <button class="logout" onclick="sair()">
+      <i class="fa fa-sign-out-alt"></i> Sair
     </button>
 
-  </header>
+  </aside>
 
-  <main class="dashboard">
+  <!-- CONTEÚDO -->
+  <main class="dashboard-main">
 
-    <section class="boas-vindas">
+    <header class="top-header">
 
-      <h2 id="mensagemUsuario">
-        Olá, estudante 👋
-      </h2>
+      <h2 id="mensagemUsuario">Olá, estudante 👋</h2>
 
-      <p>
-        Organize sua rotina e acompanhe seus estudos.
-      </p>
+    </header>
 
-    </section>
-    <!-- PROGRESSO -->
+    <!-- CARDS DE RESUMO -->
+    <section class="cards-resumo">
 
-<section class="dashboard-card">
-
-  <h3>Meu Progresso</h3>
-
-  <div class="progresso-container">
-
-    <div id="barraProgresso"></div>
-
-  </div>
-
-  <p id="textoProgresso">
-    0% concluído
-  </p>
-
-</section>
-
-    <!-- TAREFAS -->
-
-    <section class="dashboard-card">
-
-      <h3>Minhas Tarefas</h3>
-
-      <div class="input-area">
-
-        <input
-          type="text"
-          id="tarefaInput"
-          placeholder="Digite uma tarefa"
-        >
-
-        <button onclick="adicionarTarefa()">
-          Adicionar
-        </button>
-
+      <div class="card-info">
+        <i class="fa fa-list-check"></i>
+        <h3 id="cardTarefas">0 Tarefas</h3>
+        <p>Pendentes hoje</p>
       </div>
 
-      <ul id="listaTarefas"></ul>
-
-    </section>
-
-    <!-- METAS -->
-
-    <section class="dashboard-card">
-
-      <h3>Metas de Estudo</h3>
-
-      <div class="input-area">
-
-        <input
-          type="text"
-          id="metaInput"
-          placeholder="Digite uma meta"
-        >
-
-        <button onclick="adicionarMeta()">
-          Adicionar
-        </button>
-
+      <div class="card-info">
+        <i class="fa fa-bullseye"></i>
+        <h3 id="cardMetas">0 Metas</h3>
+        <p>Objetivos ativos</p>
       </div>
 
-      <ul id="listaMetas"></ul>
+      <div class="card-info">
+        <i class="fa fa-calendar"></i>
+        <h3 id="cardCronograma">0 Horários</h3>
+        <p>Registrados</p>
+      </div>
 
     </section>
-    <!-- CRONOGRAMA -->
 
-<section class="dashboard-card">
+    <!-- BARRA DE PROGRESSO -->
+    <section class="dashboard-card">
 
-  <h3>Cronograma de Estudos</h3>
+      <h3>Meu Progresso</h3>
 
-  <div class="cronograma-form">
+      <div class="progresso-container">
+        <div id="barraProgresso"></div>
+      </div>
 
-    <input
-      type="text"
-      id="materiaInput"
-      placeholder="Matéria"
-    >
+      <p id="textoProgresso">0% concluído</p>
 
-    <select id="diaInput">
+    </section>
 
-      <option value="">
-        Selecione o dia
-      </option>
+    <!-- GRID MAIOR (TAREFAS, METAS, CRONOGRAMA) -->
 
-      <option>Segunda</option>
-      <option>Terça</option>
-      <option>Quarta</option>
-      <option>Quinta</option>
-      <option>Sexta</option>
-      <option>Sábado</option>
-      <option>Domingo</option>
+    <div class="dashboard-grid">
 
-    </select>
+      <!-- TAREFAS -->
+      <section class="dashboard-card" id="tarefas">
 
-    <input
-      type="time"
-      id="horarioInput"
-    >
+        <h3>Tarefas</h3>
 
-    <button onclick="adicionarCronograma()">
-      Adicionar
-    </button>
+        <div class="input-area">
+          <input id="tarefaInput" type="text"
+                 placeholder="Nova tarefa...">
+          <button onclick="adicionarTarefa()">+</button>
+        </div>
 
-  </div>
+        <ul id="listaTarefas"></ul>
 
-  <div id="listaCronograma"></div>
+      </section>
 
-</section>
+      <!-- METAS -->
+      <section class="dashboard-card" id="metas">
+
+        <h3>Metas de Estudo</h3>
+
+        <div class="input-area">
+          <input id="metaInput" type="text"
+                 placeholder="Nova meta...">
+          <button onclick="adicionarMeta()">+</button>
+        </div>
+
+        <ul id="listaMetas"></ul>
+
+      </section>
+
+      <!-- CRONOGRAMA -->
+      <section class="dashboard-card" id="cronograma">
+
+        <h3>Cronograma</h3>
+
+        <div class="cronograma-form">
+
+          <input id="materiaInput" type="text"
+                 placeholder="Matéria">
+
+          <select id="diaInput">
+            <option value="">Dia</option>
+            <option>Segunda</option>
+            <option>Terça</option>
+            <option>Quarta</option>
+            <option>Quinta</option>
+            <option>Sexta</option>
+            <option>Sábado</option>
+            <option>Domingo</option>
+          </select>
+
+          <input id="horarioInput" type="time">
+
+          <button onclick="adicionarCronograma()">+</button>
+
+        </div>
+
+        <div id="listaCronograma"></div>
+
+      </section>
+
+    </div>
 
   </main>
 
