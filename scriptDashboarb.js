@@ -33,8 +33,10 @@ function adicionarTarefa() {
     return;
   }
 
-  tarefas.push(texto);
-
+  tarefas.push({
+  texto: texto,
+  concluida: false
+});
   localStorage.setItem(
     "tarefas",
     JSON.stringify(tarefas)
@@ -55,23 +57,57 @@ function renderizarTarefas() {
   tarefas.forEach((tarefa, index) => {
 
     lista.innerHTML += `
-      <li>
-        ${tarefa}
 
-        <button
-          class="remover-btn"
-          onclick="removerTarefa(${index})"
-        >
-          X
-        </button>
+      <li>
+
+        <span style="
+          text-decoration:
+          ${tarefa.concluida ? "line-through" : "none"};
+        ">
+
+          ${tarefa.texto}
+
+        </span>
+
+        <div>
+
+          <button
+            onclick="concluirTarefa(${index})"
+          >
+            ✔
+          </button>
+
+          <button
+            class="remover-btn"
+            onclick="removerTarefa(${index})"
+          >
+            X
+          </button>
+
+        </div>
+
       </li>
     `;
   });
+
+  atualizarProgresso();
 }
 
 function removerTarefa(index) {
 
   tarefas.splice(index, 1);
+
+  localStorage.setItem(
+    "tarefas",
+    JSON.stringify(tarefas)
+  );
+
+  renderizarTarefas();
+}
+function concluirTarefa(index) {
+
+  tarefas[index].concluida =
+    !tarefas[index].concluida;
 
   localStorage.setItem(
     "tarefas",
@@ -161,3 +197,36 @@ function sair() {
 renderizarTarefas();
 
 renderizarMetas();
+function atualizarProgresso() {
+
+  const barra =
+    document.getElementById("barraProgresso");
+
+  const texto =
+    document.getElementById("textoProgresso");
+
+  if(tarefas.length === 0) {
+
+    barra.style.width = "0%";
+
+    texto.innerText = "0% concluído";
+
+    return;
+  }
+
+  const concluidas =
+    tarefas.filter(
+      tarefa => tarefa.concluida
+    ).length;
+
+  const porcentagem =
+    Math.round(
+      (concluidas / tarefas.length) * 100
+    );
+
+  barra.style.width =
+    porcentagem + "%";
+
+  texto.innerText =
+    porcentagem + "% concluído";
+}
