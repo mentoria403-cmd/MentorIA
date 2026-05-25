@@ -115,15 +115,24 @@
       <!-- CRONOGRAMA -->
       <section class="dashboard-card" id="cronograma">
 
-        <h3>Cronograma</h3>
+          <h3>Cronograma</h3>
+
+      <!-- FORMULÁRIO -->
 
         <div class="cronograma-form">
 
-          <input id="materiaInput" type="text"
-                 placeholder="Matéria">
+          <input
+            type="text"
+            id="materiaInput"
+            placeholder="Matéria"
+          >
 
           <select id="diaInput">
-            <option value="">Dia</option>
+
+            <option value="">
+              Dia
+            </option>
+
             <option>Segunda</option>
             <option>Terça</option>
             <option>Quarta</option>
@@ -131,15 +140,60 @@
             <option>Sexta</option>
             <option>Sábado</option>
             <option>Domingo</option>
+
           </select>
 
-          <input id="horarioInput" type="time">
+          <input
+            type="time"
+            id="horarioInput"
+          >
 
-          <button onclick="adicionarCronograma()">+</button>
+          <button onclick="adicionarCronograma()">
+            Adicionar
+          </button>
 
         </div>
 
-        <div id="listaCronograma"></div>
+      <!-- CRONOGRAMA VISUAL -->
+
+        <div class="cronograma-grid">
+
+          <div class="dia-card">
+            <h4>Segunda</h4>
+            <div id="Segunda"></div>
+          </div>
+
+          <div class="dia-card">
+            <h4>Terça</h4>
+            <div id="Terça"></div>
+          </div>
+
+          <div class="dia-card">
+            <h4>Quarta</h4>
+            <div id="Quarta"></div>
+          </div>
+
+          <div class="dia-card">
+            <h4>Quinta</h4>
+            <div id="Quinta"></div>
+          </div>
+
+          <div class="dia-card">
+            <h4>Sexta</h4>
+            <div id="Sexta"></div>
+          </div>
+
+          <div class="dia-card">
+            <h4>Sábado</h4>
+            <div id="Sábado"></div>
+          </div>
+
+          <div class="dia-card">
+            <h4>Domingo</h4>
+            <div id="Domingo"></div>
+          </div>
+
+        </div>
 
       </section>
 

@@ -2,6 +2,7 @@
 
 const usuario =
   JSON.parse(localStorage.getItem("usuario"));
+  const emailUsuario = usuario.email;
 
 // MOSTRAR NOME
 
@@ -16,7 +17,7 @@ if(usuario) {
 // TAREFAS
 
 let tarefas =
-  JSON.parse(localStorage.getItem("tarefas"))
+  JSON.parse(localStorage.getItem(`tarefas_${emailUsuario}`))
   || [];
 
 function adicionarTarefa() {
@@ -38,7 +39,7 @@ function adicionarTarefa() {
   concluida: false
 });
   localStorage.setItem(
-    "tarefas",
+  `tarefas_${emailUsuario}`,
     JSON.stringify(tarefas)
   );
 
@@ -99,7 +100,7 @@ function removerTarefa(index) {
   tarefas.splice(index, 1);
 
   localStorage.setItem(
-    "tarefas",
+  `tarefas_${emailUsuario}`,
     JSON.stringify(tarefas)
   );
 
@@ -112,7 +113,7 @@ function concluirTarefa(index) {
     !tarefas[index].concluida;
 
   localStorage.setItem(
-    "tarefas",
+  `tarefas_${emailUsuario}`,
     JSON.stringify(tarefas)
   );
 
@@ -123,7 +124,7 @@ function concluirTarefa(index) {
 // METAS
 
 let metas =
-  JSON.parse(localStorage.getItem("metas"))
+  JSON.parse(localStorage.getItem(`metas_${emailUsuario}`))
   || [];
 
 function adicionarMeta() {
@@ -146,7 +147,7 @@ function adicionarMeta() {
 });
 
   localStorage.setItem(
-    "metas",
+  `metas_${emailUsuario}`,
     JSON.stringify(metas)
   );
 
@@ -209,7 +210,7 @@ function removerMeta(index) {
   metas.splice(index, 1);
 
   localStorage.setItem(
-    "metas",
+  `metas_${emailUsuario}`,
     JSON.stringify(metas)
   );
 
@@ -222,12 +223,137 @@ function concluirMeta(index) {
     !metas[index].concluida;
 
   localStorage.setItem(
-    "metas",
+  `metas_${emailUsuario}`,
     JSON.stringify(metas)
   );
 
   renderizarMetas();
   atualizarCards();
+}
+
+// CRONOGRAMA
+
+let cronograma =
+  JSON.parse(
+    localStorage.getItem(`cronograma_${emailUsuario}`)) 
+    || [];
+
+function renderizarCronograma() {
+
+  const dias = [
+    "Segunda",
+    "Terça",
+    "Quarta",
+    "Quinta",
+    "Sexta",
+    "Sábado",
+    "Domingo"
+  ];
+
+  // LIMPAR
+
+  dias.forEach((dia) => {
+
+    const coluna =
+      document.getElementById(dia);
+
+    coluna.innerHTML = "";
+  });
+
+  // RENDERIZAR
+
+  cronograma.forEach((item, index) => {
+
+    const coluna =
+      document.getElementById(item.dia);
+
+    const bloco =
+      document.createElement("div");
+
+    bloco.classList.add("estudo-item");
+
+    bloco.innerHTML = `
+
+      <div>
+
+        <strong>${item.materia}</strong>
+
+        <br>
+
+        ${item.horario}
+
+      </div>
+
+      <button
+        onclick="removerCronograma(${index})"
+      >
+        X
+      </button>
+    `;
+
+    coluna.appendChild(bloco);
+  });
+}
+function adicionarCronograma() {
+
+  const materia =
+    document.getElementById("materiaInput").value;
+
+  const dia =
+    document.getElementById("diaInput").value;
+
+  const horario =
+    document.getElementById("horarioInput").value;
+
+  // VALIDAÇÃO
+
+  if(
+    materia.trim() === "" ||
+    dia.trim() === "" ||
+    horario.trim() === ""
+  ) {
+
+    alert("Preencha todos os campos!");
+
+    return;
+  }
+
+  // OBJETO
+
+  const novoEstudo = {
+    materia: materia,
+    dia: dia,
+    horario: horario
+  };
+
+  // ADICIONAR
+
+  cronograma.push(novoEstudo);
+
+  // SALVAR
+
+  localStorage.setItem(
+    `cronograma_${emailUsuario}`,
+    JSON.stringify(cronograma)
+  );
+
+  // LIMPAR FORM
+
+  limparFormularioCronograma();
+
+  // RENDERIZAR
+
+  renderizarCronograma();
+
+  atualizarCards();
+}
+function limparFormularioCronograma() {
+
+  document.getElementById("materiaInput").value = "";
+
+  document.getElementById("diaInput").value = "";
+
+  document.getElementById("horarioInput").value = "";
 }
 
 // SAIR
@@ -242,6 +368,7 @@ function sair() {
 renderizarTarefas();
 
 renderizarMetas();
+renderizarCronograma();
 function atualizarProgresso() {
 
   const barra =
