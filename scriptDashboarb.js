@@ -1,7 +1,10 @@
 // PEGAR USUÁRIO
 
 const usuario =
-  JSON.parse(localStorage.getItem("usuario"));
+  JSON.parse(
+    localStorage.getItem("usuarioLogado")
+  );
+
   const emailUsuario = usuario.email;
 
 // MOSTRAR NOME
@@ -347,6 +350,19 @@ function adicionarCronograma() {
 
   atualizarCards();
 }
+function removerCronograma(index) {
+
+  cronograma.splice(index, 1);
+
+  localStorage.setItem(
+    `cronograma_${emailUsuario}`,
+    JSON.stringify(cronograma)
+  );
+
+  renderizarCronograma();
+
+  atualizarCards();
+}
 function limparFormularioCronograma() {
 
   document.getElementById("materiaInput").value = "";
@@ -359,6 +375,8 @@ function limparFormularioCronograma() {
 // SAIR
 
 function sair() {
+
+  localStorage.removeItem("usuarioLogado");
 
   window.location.href = "login.html";
 }
@@ -434,4 +452,12 @@ function atualizarCards() {
   document.getElementById("cardCronograma")
     .innerText = cronograma.length + " Horários";
 }
+renderizarTarefas();
 
+renderizarMetas();
+
+renderizarCronograma();
+
+atualizarCards();
+
+atualizarProgresso();
